@@ -20,3 +20,8 @@ cd Bi
 cd BiGG_CrackNAg/
 cd raw_data
 ls
+cd ..
+#go up one folder
+#Copying Folder
+cp filename ../foldername
+cp TN14_S30_L001_R2_001.fastq.gz ../MS_practice
