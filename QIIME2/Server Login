@@ -10,6 +10,7 @@ qiime --help
 # get into Staton
 cd ../../staton
 ls
+#you will see all the folders within
 cd projects
 #autofill
 cd Bi
@@ -17,3 +18,5 @@ cd Bi
 #hit tab again and it'll fill it out again to CrackNAg
 #or directly type/past:
 cd BiGG_CrackNAg/
+cd raw_data
+ls
