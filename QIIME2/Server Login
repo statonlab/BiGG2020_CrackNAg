@@ -6,3 +6,6 @@
 ssh username@staton.newton.utk.edu
 conda activate qiime2-2020.2
 qiime --help
+
+# get into Staton
+cd ../../staton
