@@ -9,3 +9,8 @@ qiime --help
 
 # get into Staton
 cd ../../staton
+ls
+cd projects
+#autofill
+cd Bi
+#hit tab and should autofill t capital c and type lowercase r so it should autofill folder name
