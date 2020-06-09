@@ -1,0 +1,10 @@
+# How to Log-in to Staton Server
+
+ssh username@staton.newton.utk.edu
+
+#type password
+#create conda environment
+
+conda activate qiime2-2020.2
+
+qiime --help
