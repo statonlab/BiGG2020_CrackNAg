@@ -14,3 +14,6 @@ cd projects
 #autofill
 cd Bi
 #hit tab and should autofill t capital c and type lowercase r so it should autofill folder name
+#hit tab again and it'll fill it out again to CrackNAg
+#or directly type/past:
+cd BiGG_CrackNAg/
