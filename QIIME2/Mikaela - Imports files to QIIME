@@ -1,0 +1,30 @@
+(qiime2-2020.2) [mseemann@staton BiGG_CrackNAg]$ cd MS_practice
+(qiime2-2020.2) [mseemann@staton MS_practice]$ echo -e "sample-id\tforward-absol                                                         ute-filepath\treverse-absolute-filepath" > manifest.tsv
+(qiime2-2020.2) [mseemann@staton MS_practice]$ ls
+manifest.tsv  TN14_S30_L001_R1_001.fastq.gz  TN14_S30_L001_R2_001.fastq.gz
+(qiime2-2020.2) [mseemann@staton MS_practice]$ less manifest.tsv
+(qiime2-2020.2) [mseemann@staton MS_practice]$ touch make_manifest.sh
+(qiime2-2020.2) [mseemann@staton MS_practice]$ ls
+make_manifest.sh  TN14_S30_L001_R1_001.fastq.gz
+manifest.tsv      TN14_S30_L001_R2_001.fastq.gz
+(qiime2-2020.2) [mseemann@staton MS_practice]$ chmod -x make_manifest.sh
+(qiime2-2020.2) [mseemann@staton MS_practice]$ ls
+make_manifest.sh  TN14_S30_L001_R1_001.fastq.gz
+manifest.tsv      TN14_S30_L001_R2_001.fastq.gz
+(qiime2-2020.2) [mseemann@staton MS_practice]$ nano make_manifest.sh
+(qiime2-2020.2) [mseemann@staton MS_practice]$ bash make_manifest.sh >> manifest                                                         .tsv
+(qiime2-2020.2) [mseemann@staton MS_practice]$ less manifest.tsv
+(qiime2-2020.2) [mseemann@staton MS_practice]$ # load qiime environment
+(qiime2-2020.2) [mseemann@staton MS_practice]$ conda activate qiime2-2020.2
+estPhred33V2(qiime2-2020.2) [mseemann@staton MS_practice]$ # run the import comm                                                         and
+(qiime2-2020.2) [mseemann@staton MS_practice]$ qiime tools import \
+> --type 'SampleData[PairedEndSequencesWithQuality]' \
+> --input-path manifest.tsv \
+> --output-path paired-end-demux.qza \
+> --input-format PairedEndFastqManifestPhred33V2
+Imported manifest.tsv as PairedEndFastqManifestPhred33V2 to paired-end-demux.qza
+(qiime2-2020.2) [mseemann@staton MS_practice]$ qiime demux summarize \
+>   --i-data paired-end-demux.qza \
+> --o-visualization demux.qzv
+Saved Visualization to: demux.qzv
+
