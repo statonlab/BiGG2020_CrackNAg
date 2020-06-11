@@ -6,10 +6,19 @@ qiime dada2 denoise-single \
   --o-representative-sequences rep-seqs-dada2.qza \
   --o-table table-dada2.qza \
   --o-denoising-stats stats-dada2.qza
-  
+
+# Makes table of DADA2 stats
 qiime metadata tabulate \
   --m-input-file stats-dada2.qza \
   --o-visualization stats-dada2.qzv
-  
+
 mv rep-seqs-dada2.qza rep-seqs.qza
 mv table-dada2.qza table.qza
+
+qiime feature-table summarize \
+  --i-table table.qza \
+  --o-visualization table.qzv \
+  --m-sample-metadata-file sample-metadata.tsv
+qiime feature-table tabulate-seqs \
+  --i-data rep-seqs.qza \
+  --o-visualization rep-seqs.qzv
