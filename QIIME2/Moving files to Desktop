@@ -1,0 +1,17 @@
+scp mseemann@staton.newton.utk.edu:/staton/projects/BiGG_CrackNAg/MS_practice/demux.qzv .
+mseemann@staton.newton.utk.edu's password:
+demux.qzv                                                                                              100%  293KB 602.4KB/s   00:00
+                                                                                                                                        ✔
+
+  11/06/2020   14:28.17   /home/mobaxterm  ls
+Desktop         LauncherFolder  MyDocuments     README.txt      demux.qzv
+                                                                                                                                        ✔
+
+  11/06/2020   14:28.22   /home/mobaxterm  mv demux.qzv De
+demux.qzv  Desktop/
+
+  11/06/2020   14:28.22   /home/mobaxterm  mv demux.qzv Desktop
+                                                                                                                                        ✔
+
+  11/06/2020   14:29.34   /home/mobaxterm  ls
+Desktop         LauncherFolder  MyDocuments     README.txt
