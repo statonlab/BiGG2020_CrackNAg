@@ -21,7 +21,7 @@ qiime metadata tabulate \
 qiime feature-table summarize \
   --i-table table.qza \
   --o-visualization table.qzv \
-  --m-sample-metadata-file sample_metadata.tsv
+  --m-sample-metadata-file sample-metadata.tsv
 qiime feature-table tabulate-seqs \
   --i-data rep-seqs.qza \
   --o-visualization rep-seqs.qzv
@@ -39,16 +39,16 @@ qiime diversity core-metrics-phylogenetic \
   --i-phylogeny rooted-tree.qza \
   --i-table table.qza \
   --p-sampling-depth 1103 \
-  --m-metadata-file sample_metadata.tsv \
+  --m-metadata-file sample-metadata.tsv \
   --output-dir core-metrics-results
 
 # Making the faith sig and evenness sig graphs
 qiime diversity alpha-group-significance \
   --i-alpha-diversity core-metrics-results/faith_pd_vector.qza \
-  --m-metadata-file sample_metadata.tsv \
+  --m-metadata-file sample-metadata.tsv \
   --o-visualization core-metrics-results/faith-pd-group-significance.qzv
 qiime diversity alpha-group-significance \
   --i-alpha-diversity core-metrics-results/evenness_vector.qza \
-  --m-metadata-file sample_metadata.tsv \
+  --m-metadata-file sample-metadata.tsv \
   --o-visualization core-metrics-results/evenness-group-significance.qzv
   
