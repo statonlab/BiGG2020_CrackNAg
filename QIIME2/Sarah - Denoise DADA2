@@ -20,10 +20,9 @@ qiime metadata tabulate \
 qiime feature-table summarize \
   --i-table table.qza \
   --o-visualization table.qzv \
-  --m-sample-metadata-file manifest.tsv  
+  --m-sample-metadata-file sample_metadata.tsv
 qiime feature-table tabulate-seqs \
   --i-data rep-seqs.qza \
   --o-visualization rep-seqs.qzv
 
 
-sed 's/,/\t/g' nifa_meta.csv >> sample_metadata.tsv
