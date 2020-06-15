@@ -24,3 +24,6 @@ qiime feature-table summarize \
 qiime feature-table tabulate-seqs \
   --i-data rep-seqs.qza \
   --o-visualization rep-seqs.qzv
+
+
+sed 's/,/\t/g' nifa_meta.csv >> sample_metadata.tsv
