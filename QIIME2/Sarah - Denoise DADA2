@@ -1,6 +1,6 @@
 # Makes a summary table
 qiime demux summarize \
-  --i-data demux.qza \
+  --i-data paired-end-demux.qza \
   --o-visualization demux.qzv
 
 # How exactly do we determine where to cut off?
