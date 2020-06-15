@@ -2,7 +2,7 @@
 qiime dada2 denoise-single \
   --i-demultiplexed-seqs paired-end-demux.qza \
   --p-trim-left 0 \
-  --p-trunc-len 275 \
+  --p-trunc-len 250 \
   --o-representative-sequences rep-seqs-dada2.qza \
   --o-table table-dada2.qza \
   --o-denoising-stats stats-dada2.qza
