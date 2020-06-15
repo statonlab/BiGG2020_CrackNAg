@@ -41,4 +41,14 @@ qiime diversity core-metrics-phylogenetic \
   --p-sampling-depth 1103 \
   --m-metadata-file sample_metadata.tsv \
   --output-dir core-metrics-results
+
+# Making the faith sig and evenness sig graphs
+qiime diversity alpha-group-significance \
+  --i-alpha-diversity core-metrics-results/faith_pd_vector.qza \
+  --m-metadata-file sample_metadata.tsv \
+  --o-visualization core-metrics-results/faith-pd-group-significance.qzv
+qiime diversity alpha-group-significance \
+  --i-alpha-diversity core-metrics-results/evenness_vector.qza \
+  --m-metadata-file sample_metadata.tsv \
+  --o-visualization core-metrics-results/evenness-group-significance.qzv
   
