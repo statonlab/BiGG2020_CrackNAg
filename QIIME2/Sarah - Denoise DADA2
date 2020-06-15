@@ -3,7 +3,7 @@ qiime demux summarize \
   --i-data paired-end-demux.qza \
   --o-visualization demux.qzv
 
-# How exactly do we determine where to cut off?
+# Denoising step
 qiime dada2 denoise-single \
   --i-demultiplexed-seqs paired-end-demux.qza \
   --p-trim-left 0 \
@@ -17,6 +17,7 @@ qiime metadata tabulate \
   --m-input-file stats-dada2.qza \
   --o-visualization stats-dada2.qzv
 
+# Generates feature tables
 qiime feature-table summarize \
   --i-table table.qza \
   --o-visualization table.qzv \
@@ -25,4 +26,19 @@ qiime feature-table tabulate-seqs \
   --i-data rep-seqs.qza \
   --o-visualization rep-seqs.qzv
 
+# Generates trees for Alpha-Beta analysis
+qiime phylogeny align-to-tree-mafft-fasttree \
+  --i-sequences rep-seqs.qza \
+  --o-alignment aligned-rep-seqs.qza \
+  --o-masked-alignment masked-aligned-rep-seqs.qza \
+  --o-tree unrooted-tree.qza \
+  --o-rooted-tree rooted-tree.qza
 
+# Performs Alpha-Beta analysis
+qiime diversity core-metrics-phylogenetic \
+  --i-phylogeny rooted-tree.qza \
+  --i-table table.qza \
+  --p-sampling-depth 1103 \
+  --m-metadata-file sample_metadata.tsv \
+  --output-dir core-metrics-results
+  
