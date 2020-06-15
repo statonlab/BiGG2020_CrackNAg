@@ -1,3 +1,8 @@
+# Makes a summary table
+qiime demux summarize \
+  --i-data demux.qza \
+  --o-visualization demux.qzv
+
 # How exactly do we determine where to cut off?
 qiime dada2 denoise-single \
   --i-demultiplexed-seqs paired-end-demux.qza \
