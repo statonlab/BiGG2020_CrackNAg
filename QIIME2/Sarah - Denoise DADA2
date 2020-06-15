@@ -42,6 +42,7 @@ qiime phylogeny align-to-tree-mafft-fasttree \
   --o-rooted-tree rooted-tree.qza
 
 # Performs Alpha-Beta analysis
+# How do we decide on sampling depth?
 qiime diversity core-metrics-phylogenetic \
   --i-phylogeny rooted-tree.qza \
   --i-table table.qza \
