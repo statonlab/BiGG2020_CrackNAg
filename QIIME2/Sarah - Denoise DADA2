@@ -1,3 +1,10 @@
+# Importing data to qiime
+qiime tools import \
+ --type 'SampleData[PairedEndSequencesWithQuality]' \
+ --input-path manifest.tsv \
+ --output-path paired-end-demux.qza \
+ --input-format PairedEndFastqManifestPhred33V2
+
 # Makes a summary table
 qiime demux summarize \
   --i-data paired-end-demux.qza \
