@@ -95,4 +95,5 @@ qiime diversity beta-group-significance \
   --o-visualization core-metrics-results/unweighted-unifrac-treat-significance.qzv \
   --p-pairwise
 
+# Run this in a new terminal tab in the Desktop folder
 scp mseemann@staton.newton.utk.edu:/staton/projects/BiGG_CrackNAg/MS_practice/core-metrics-results/*.qzv .
