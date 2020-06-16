@@ -12,6 +12,10 @@ qiime demux summarize \
   --i-data paired-end-demux.qza \
   --o-visualization demux.qzv
 
+
+##################################################################################
+# Stop and check demux.qzv for cutoff
+
 # Denoising step
 qiime dada2 denoise-single \
   --i-demultiplexed-seqs paired-end-demux.qza \
@@ -42,6 +46,10 @@ qiime phylogeny align-to-tree-mafft-fasttree \
   --o-masked-alignment masked-aligned-rep-seqs.qza \
   --o-tree unrooted-tree.qza \
   --o-rooted-tree rooted-tree.qza
+
+
+##################################################################################
+# Stop and check for sampling depth
 
 # Performs Alpha-Beta analysis
 # How do we decide on sampling depth?
@@ -94,6 +102,9 @@ qiime diversity beta-group-significance \
   --m-metadata-column Treat \
   --o-visualization core-metrics-results/unweighted-unifrac-treat-significance.qzv \
   --p-pairwise
+
+
+
 
 # Run this in a new terminal tab in the Desktop folder
 scp mseemann@staton.newton.utk.edu:/staton/projects/BiGG_CrackNAg/MS_practice/core-metrics-results/*.qzv .
