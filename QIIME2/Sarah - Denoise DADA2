@@ -1,3 +1,5 @@
+# QIIME2 analysis of zipped fastq files
+
 # Importing data to qiime
 qiime tools import \
  --type 'SampleData[PairedEndSequencesWithQuality]' \
