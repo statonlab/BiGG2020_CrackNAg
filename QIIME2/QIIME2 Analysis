@@ -49,7 +49,7 @@ qiime phylogeny align-to-tree-mafft-fasttree \
 
 
 ##################################################################################
-# Stop and check for sampling depth
+# Stop and check table.qzv for sampling depth
 
 # Performs Alpha-Beta analysis
 # How do we decide on sampling depth?
