@@ -3,5 +3,5 @@ for f1 in *.qza
 do
   qiime tools export \
    --input-path $f1 \
-   --output-path exported-feature-table/$f1.tsv
+   --output-path exported-feature-table/$f1
 done
