@@ -5,3 +5,7 @@ do
    --input-path $f1 \
    --output-path exported-feature-table/$f1
 done
+
+
+# Moving from exported folder in core metrics into other exported folder
+mv * ../../exported-feature-table/
