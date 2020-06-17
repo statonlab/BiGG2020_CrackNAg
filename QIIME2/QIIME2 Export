@@ -1,0 +1,7 @@
+# For loop that exports all .qza files in the current folder
+for f1 in *.qza
+do
+  qiime tools export \
+   --input-path $f1 \
+   --output-path exported-feature-table
+done
