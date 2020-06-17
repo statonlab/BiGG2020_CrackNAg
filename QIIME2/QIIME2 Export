@@ -9,3 +9,18 @@ done
 
 # Moving from exported folder in core metrics into other exported folder
 mv * ../../exported-feature-table/
+
+
+# Removing the paired-end-demux.qza file (does not have anything we need)
+rm -rf paired-end-demux.qza/
+# Loop to rename all files after their folders and move out of individual folders
+for f1 in *
+do
+  cd $f1
+  mv * $f1.tsv
+  mv * ..
+  cd ..
+done
+
+# Run after you have confirmed all files have been moved out of their individual folders
+rm -rf *.qza
