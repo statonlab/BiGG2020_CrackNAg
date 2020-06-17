@@ -24,3 +24,10 @@ done
 
 # Run after you have confirmed all files have been moved out of their individual folders
 rm -rf *.qza
+
+
+# Copying all qiime exported files to current folder on computer
+# Your exact path will change based on which dataset you're copying
+# You should not copy all 3 sets into one place - this will overwrite all but one set
+# To get path to where you currently are on the server type pwd
+scp mseemann@staton.newton.utk.edu:path/to/folder/* .
