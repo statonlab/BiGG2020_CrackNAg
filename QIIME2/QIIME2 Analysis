@@ -110,12 +110,6 @@ qiime diversity beta-group-significance \
   --p-pairwise
 
 
-
-
-# Run this in a new terminal tab in the Desktop folder
-scp mseemann@staton.newton.utk.edu:/staton/projects/BiGG_CrackNAg/MS_practice/core-metrics-results/*.qzv .
-
-
 ##################################################################################
 # Taxonomic analysis
 
@@ -137,3 +131,8 @@ qiime feature-classifier classify-sklearn \
 qiime metadata tabulate \
   --m-input-file taxonomy.qza \
   --o-visualization taxonomy.qzv
+
+
+
+# Run this in a new terminal tab in the Desktop folder
+scp mseemann@staton.newton.utk.edu:/staton/projects/BiGG_CrackNAg/MS_practice/core-metrics-results/*.qzv .
