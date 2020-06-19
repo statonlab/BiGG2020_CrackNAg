@@ -31,3 +31,6 @@ rm -rf *.qza
 # You should not copy all 3 sets into one place - this will overwrite all but one set
 # To get path to where you currently are on the server type pwd
 scp mseemann@staton.newton.utk.edu:path/to/folder/* .
+
+
+qiime tools export --input-path taxonomy.qza --output-path taxonomy/
