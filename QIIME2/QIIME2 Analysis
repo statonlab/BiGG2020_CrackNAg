@@ -114,3 +114,16 @@ qiime diversity beta-group-significance \
 
 # Run this in a new terminal tab in the Desktop folder
 scp mseemann@staton.newton.utk.edu:/staton/projects/BiGG_CrackNAg/MS_practice/core-metrics-results/*.qzv .
+
+
+##################################################################################
+# Taxonomic analysis
+
+qiime feature-classifier classify-sklearn \
+  --i-classifier ../../SILVA/silva-132-99-nb-classifier.qza \
+  --i-reads rep-seqs.qza \
+  --o-classification taxonomy.qza
+
+qiime metadata tabulate \
+  --m-input-file taxonomy.qza \
+  --o-visualization taxonomy.qzv
