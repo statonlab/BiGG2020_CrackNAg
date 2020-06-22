@@ -70,16 +70,6 @@ qiime taxa barplot \
 
 
 ##################################################################################
-# Copying all our .qzv files to the computer
-
-scp username@staton.newton.utk.edu:/path/to/files/*.qzv .
-
-
-# For Sarah
-scp spatte29@staton.newton.utk.edu:/staton/projects/BiGG_CrackNAg/SP_practice/TN/core-metrics-results-filtered/*.qzv .
-
-
-##################################################################################
 # Exporting the filtered files
 
 # For loop that exports all .qza files in the current folder
