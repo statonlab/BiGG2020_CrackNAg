@@ -76,7 +76,42 @@ qiime diversity alpha-group-significance \
 
 
 ##################################################################################
-# Beta analysis
+# Taxonomic analysis
+
+qiime feature-classifier classify-sklearn \
+  --i-classifier ../../SILVA/silva-132-99-nb-classifier.qza \
+  --i-reads rep-seqs.qza \
+  --o-classification taxonomy.qza
+
+qiime metadata tabulate \
+  --m-input-file taxonomy.qza \
+  --o-visualization taxonomy.qzv
+ 
+# For Mikaela's - it's an extra folder up
+qiime feature-classifier classify-sklearn \
+  --i-classifier ../../../SILVA/silva-132-99-nb-classifier.qza \
+  --i-reads rep-seqs.qza \
+  --o-classification taxonomy.qza
+
+qiime metadata tabulate \
+  --m-input-file taxonomy.qza \
+  --o-visualization taxonomy.qzv
+
+
+
+# Run this in a new terminal tab in the Desktop folder
+scp mseemann@staton.newton.utk.edu:/staton/projects/BiGG_CrackNAg/MS_practice/core-metrics-results/*.qzv .
+
+
+
+
+
+
+
+
+
+##################################################################################
+# Beta analysis - didn't use this
 
 qiime diversity beta-group-significance \
   --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza \
@@ -108,31 +143,3 @@ qiime diversity beta-group-significance \
   --m-metadata-column Soil_type \
   --o-visualization core-metrics-results/unweighted-unifrac-soil-type-significance.qzv \
   --p-pairwise
-
-
-##################################################################################
-# Taxonomic analysis
-
-qiime feature-classifier classify-sklearn \
-  --i-classifier ../../SILVA/silva-132-99-nb-classifier.qza \
-  --i-reads rep-seqs.qza \
-  --o-classification taxonomy.qza
-
-qiime metadata tabulate \
-  --m-input-file taxonomy.qza \
-  --o-visualization taxonomy.qzv
- 
-# For Mikaela's - it's an extra folder up
-qiime feature-classifier classify-sklearn \
-  --i-classifier ../../../SILVA/silva-132-99-nb-classifier.qza \
-  --i-reads rep-seqs.qza \
-  --o-classification taxonomy.qza
-
-qiime metadata tabulate \
-  --m-input-file taxonomy.qza \
-  --o-visualization taxonomy.qzv
-
-
-
-# Run this in a new terminal tab in the Desktop folder
-scp mseemann@staton.newton.utk.edu:/staton/projects/BiGG_CrackNAg/MS_practice/core-metrics-results/*.qzv .
