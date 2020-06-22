@@ -37,34 +37,11 @@ qiime diversity alpha-group-significance \
 
 
 ##################################################################################
-# Taxonomic analysis
-
-qiime feature-classifier classify-sklearn \
-  --i-classifier ../../SILVA/silva-132-99-nb-classifier.qza \
-  --i-reads rep-seqs.qza \
-  --o-classification filtered-taxonomy.qza
-
-qiime metadata tabulate \
-  --m-input-file filtered-taxonomy.qza \
-  --o-visualization filtered-taxonomy.qzv
- 
-# For Mikaela's - it's an extra folder up
-qiime feature-classifier classify-sklearn \
-  --i-classifier ../../../SILVA/silva-132-99-nb-classifier.qza \
-  --i-reads rep-seqs.qza \
-  --o-classification filtered-taxonomy.qza
-
-qiime metadata tabulate \
-  --m-input-file filtered-taxonomy.qza \
-  --o-visualization filtered-taxonomy.qzv
-
-
-##################################################################################
 # Creating a barplot of the taxonomy data
 
 qiime taxa barplot \
-  --i-table filtered-table.qza \
-  --i-taxonomy filtered-taxonomy.qza \
+  --i-table table-no-mitochondria-no-chloroplast.qza \
+  --i-taxonomy taxonomy.qza \
   --m-metadata-file sample-metadata.tsv \
   --o-visualization taxa-bar-plots.qzv
 
