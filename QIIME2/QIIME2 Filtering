@@ -59,6 +59,7 @@ done
 
 
 # Loop to rename all files after their folders and move out of individual folders
+cd exported-feature-table-filtered/
 for f1 in *
 do
   cd $f1
