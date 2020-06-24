@@ -7,6 +7,7 @@ qiime tools import \
  --output-path paired-end-demux.qza \
  --input-format PairedEndFastqManifestPhred33V2
 
+
 # Makes a summary table
 qiime demux summarize \
   --i-data paired-end-demux.qza \
@@ -25,10 +26,12 @@ qiime dada2 denoise-single \
   --o-table table.qza \
   --o-denoising-stats stats-dada2.qza
 
+
 # Makes table of DADA2 stats
 qiime metadata tabulate \
   --m-input-file stats-dada2.qza \
   --o-visualization stats-dada2.qzv
+
 
 # Generates feature tables
 qiime feature-table summarize \
@@ -38,6 +41,7 @@ qiime feature-table summarize \
 qiime feature-table tabulate-seqs \
   --i-data rep-seqs.qza \
   --o-visualization rep-seqs.qzv
+
 
 # Generates trees for Alpha-Beta analysis
 qiime phylogeny align-to-tree-mafft-fasttree \
@@ -56,15 +60,18 @@ qiime feature-classifier classify-sklearn \
   --i-reads rep-seqs.qza \
   --o-classification taxonomy.qza
 
+
 qiime metadata tabulate \
   --m-input-file taxonomy.qza \
   --o-visualization taxonomy.qzv
- 
+
+
 # For Mikaela's - it's an extra folder up
 qiime feature-classifier classify-sklearn \
   --i-classifier ../../../SILVA/silva-132-99-nb-classifier.qza \
   --i-reads rep-seqs.qza \
   --o-classification taxonomy.qza
+
 
 qiime metadata tabulate \
   --m-input-file taxonomy.qza \
@@ -84,18 +91,9 @@ qiime diversity core-metrics-phylogenetic \
   --output-dir core-metrics-results
 
 
-qiime taxa barplot \
-  --i-table table-no-mitochondria-no-chloroplast.qza \
-  --i-taxonomy taxonomy.qza \
-  --m-metadata-file sample-metadata.tsv \
-  --o-visualization taxa-bar-plots.qzv
-
-
 ##################################################################################
 # Filtering mitochondria and chloroplast
 
-
-# Filtering out the soybean features from the taxonomy data
 qiime taxa filter-table \
   --i-table table.qza \
   --i-taxonomy taxonomy.qza \
@@ -103,12 +101,19 @@ qiime taxa filter-table \
   --o-filtered-table table-no-mitochondria-no-chloroplast.qza
  
  
- # Making the .qzv file of the filtered table
+# Making the .qzv file of the filtered table
 qiime feature-table summarize \
   --i-table table-no-mitochondria-no-chloroplast.qza \
   --o-visualization filtered-table.qzv \
   --m-sample-metadata-file sample-metadata.tsv
 
+
+# Making taxa bar plot with filtered table
+qiime taxa barplot \
+  --i-table table-no-mitochondria-no-chloroplast.qza \
+  --i-taxonomy taxonomy.qza \
+  --m-metadata-file sample-metadata.tsv \
+  --o-visualization taxa-bar-plots.qzv
  
 
 ##################################################################################
@@ -160,6 +165,7 @@ qiime diversity beta-group-significance \
   --m-metadata-column Treat \
   --o-visualization core-metrics-results/unweighted-unifrac-treat-significance.qzv \
   --p-pairwise
+  
   
   
   
