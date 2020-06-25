@@ -6,6 +6,9 @@ do
    --output-path exported-feature-table/$f1
 done
 
+# Run this command on the rarefied_table file to convert from binary to readable file
+biom convert -i feature-table.biom -o table.from_biom.txt --to-tsv
+
 
 # Moving from exported folder in core metrics into other exported folder
 mv * ../../exported-feature-table/
