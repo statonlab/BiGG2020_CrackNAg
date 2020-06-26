@@ -1,11 +1,3 @@
 taxa-bar-plots.qzv
 Generated with QIIME2
 Contains all taxonomy data
-
-taxa-bar-plots.qzv_DTT
-Generated with QIIME2
-Contains taxonomy data for DTT, DTL, DTM, DTS controls
-
-taxa-bar-plots.qzv_blank_WA_TN
-Generated with QIIME2
-Contains taxonomy data for blank controls, WA samples, and TN samples
