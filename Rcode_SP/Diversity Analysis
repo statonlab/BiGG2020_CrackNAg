@@ -1,14 +1,62 @@
-# Calculating diversity of samples using vegan and vegetarian
+# R code to generate metrics for data from rarefied_table file
 
 setwd("C:/Users/Sarah/Desktop/BiGGDataREEU/Data/QIIME2")
 
 # Loading in the necessary libraries and tables
 library(vegan)
 library(vegetarian)
+library(ggplot2)
+library(dplyr)
 
 raref.tab = read.table("rarefied_table.tab", h=T, sep='\t')
 rare.tab = raref.tab[,2:45]
 rare.tab = t(rare.tab)
 
-# Calculating shannon values for each sample
+sample_table <- read.csv("nifa_meta.csv", header = T)
+
+##############################################################################################################
+# Calculating diversity metrics for each sample
+
+# Shannon index
+# Values are typically between 1.5 and 3.5 - these can be expected to be higher in soil microbiome data
+# Shannon value increases as both evenness and richness increase
 shannon = diversity(rare.tab)
+
+# Manipulating the data to make it work with the nifa_meta file
+shannon = as.data.frame(shannon)
+shannon = tibble::rownames_to_column(shannon, "X")
+Shannon_sample = merge(shannon, sample_table[,c(1,4,5,6,7)], by = "X", all.x = T)
+
+
+# Bray-Curtis dissimilarity metric
+# A value of 0 means the two compared samples have the exact same composition
+# A value of 1 means the two samples have no shared species
+bray = vegdist(rare.tab, "bray")
+
+
+# Simpson's index
+# Reported as 1-D, wherein a higher value for D means less diversity in the sample
+# Similar to Shannon index, but much less sensitive to species richness
+simpson = diversity(rare.tab, "simpson")
+
+##############################################################################################################
+# Graphing our diversity metrics
+
+# Shannon index
+hist(shannon[,2])
+
+ggplot(Shannon_sample, aes(x=Treat, y=shannon)) + 
+  geom_boxplot()
+
+ggplot(Shannon_sample, aes(x=Treat, y=shannon, color=Compartment)) + # indicate what data, and which columns to use
+  geom_boxplot()+ # plot type
+  labs(title = "Shannon diversity", x="Treatment",y="Shannon index")+ # edit labels
+  theme(axis.text.x=element_text(angle=45, hjust=1), # rotate x-axis labels
+        panel.background = element_blank(), # remove background and grids
+        panel.border = element_rect(fill = NA, color = "black")) # add border
+
+# Bray-Curtis dissimilarity metric
+hist(bray)
+
+# Simpson's index
+hist(simpson)
