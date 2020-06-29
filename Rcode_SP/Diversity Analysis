@@ -8,8 +8,8 @@ library(vegetarian)
 library(ggplot2)
 library(dplyr)
 
-raref.tab = read.table("rarefied_table.tab", h=T, sep='\t')
-rare.tab = raref.tab[,2:45]
+rare.tab = read.table("rarefied_table.tab", h=T, sep='\t')
+rare.tab = rare.tab[,2:45]
 rare.tab = t(rare.tab)
 
 sample_table <- read.csv("nifa_meta.csv", header = T)
@@ -21,11 +21,22 @@ sample_table <- read.csv("nifa_meta.csv", header = T)
 # Values are typically between 1.5 and 3.5 - these can be expected to be higher in soil microbiome data
 # Shannon value increases as both evenness and richness increase
 shannon = diversity(rare.tab)
-
-# Manipulating the data to make it work with the nifa_meta file
 shannon = as.data.frame(shannon)
+
 shannon = tibble::rownames_to_column(shannon, "X")
-Shannon_sample = merge(shannon, sample_table[,c(1,4,5,6,7)], by = "X", all.x = T)
+
+mergedData = merge(shannon, sample_table[,c(1,4,5,6,7)], by = "X", all.x = T)
+
+
+# Simpson's index
+# Reported as 1-D, wherein a higher value for D means less diversity in the sample
+# Similar to Shannon index, but much less sensitive to species richness
+simpson = diversity(rare.tab, "simpson")
+simpson = as.data.frame(simpson)
+
+simpson = tibble::rownames_to_column(simpson, "X")
+
+mergedData = merge(simpson, mergedData, by = "X", all.x = T)
 
 
 # Bray-Curtis dissimilarity metric
@@ -33,30 +44,48 @@ Shannon_sample = merge(shannon, sample_table[,c(1,4,5,6,7)], by = "X", all.x = T
 # A value of 1 means the two samples have no shared species
 bray = vegdist(rare.tab, "bray")
 
-
-# Simpson's index
-# Reported as 1-D, wherein a higher value for D means less diversity in the sample
-# Similar to Shannon index, but much less sensitive to species richness
-simpson = diversity(rare.tab, "simpson")
-
 ##############################################################################################################
 # Graphing our diversity metrics
 
 # Shannon index
 hist(shannon[,2])
 
-ggplot(Shannon_sample, aes(x=Treat, y=shannon)) + 
-  geom_boxplot()
-
-ggplot(Shannon_sample, aes(x=Treat, y=shannon, color=Compartment)) + # indicate what data, and which columns to use
+ggplot(mergedData, aes(x=Treat, y=shannon, color=Compartment)) + # indicate what data, and which columns to use
   geom_boxplot()+ # plot type
   labs(title = "Shannon diversity", x="Treatment",y="Shannon index")+ # edit labels
   theme(axis.text.x=element_text(angle=45, hjust=1), # rotate x-axis labels
         panel.background = element_blank(), # remove background and grids
         panel.border = element_rect(fill = NA, color = "black")) # add border
 
+
+# Simpson's index
+hist(simpson[,2])
+
+ggplot(mergedData, aes(x=Treat, y=simpson, color=Compartment)) + # indicate what data, and which columns to use
+  geom_boxplot()+ # plot type
+  labs(title = "Simpson diversity", x="Treatment",y="Simpson index")+ # edit labels
+  theme(axis.text.x=element_text(angle=45, hjust=1), # rotate x-axis labels
+        panel.background = element_blank(), # remove background and grids
+        panel.border = element_rect(fill = NA, color = "black")) # add border
+
+
 # Bray-Curtis dissimilarity metric
 hist(bray)
 
-# Simpson's index
-hist(simpson)
+adonis2(bray~mergedData$Soil_type)
+
+
+# Making plots of the bray data
+# For some reason the control points change occasionally?
+windows(10,5)
+
+opar<-par()
+par(mfrow=c(1,2))
+
+plot(meta12<-metaMDS(bray,zerodist=ignore),type="n",
+     main="Soil Type")
+points(meta12,select=which(mergedData$Soil_type=="TN"),col="red")
+points(meta12,select=which(mergedData$Soil_type=="WA"),col="blue")
+ordispider(meta12,group=mergedData$Compartment)
+
+par(opar)
