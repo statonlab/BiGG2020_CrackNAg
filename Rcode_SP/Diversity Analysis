@@ -86,6 +86,6 @@ plot(meta12<-metaMDS(bray,zerodist=ignore),type="n",
      main="Soil Type")
 points(meta12,select=which(mergedData$Soil_type=="TN"),col="red")
 points(meta12,select=which(mergedData$Soil_type=="WA"),col="blue")
-ordispider(meta12,group=mergedData$Compartment)
+ordispider(meta12,group=mergedData$Soil_type)
 
 par(opar)
