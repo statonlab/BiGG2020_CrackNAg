@@ -1,0 +1,24 @@
+# Making the taxonomy table with abundances to use with R/python
+
+qiime tools export \
+  --input-path table.qza \
+  --output-path table.export/
+
+cd table.export/
+biom convert -i feature-table.biom -o feature-table.tsv --to-tsv
+
+cd ..
+qiime tools export --input-path taxonomy.qza --output-path table.export/
+
+cd table.export/
+
+######################################################################################################################################
+
+# Edit the header of the taxonomy.tsv table to:
+#OTU ID [tab] taxonomy [tab] confidence
+
+######################################################################################################################################
+
+# This should produce the table-with-taxonomy.txt file (same as feature-table.tsv but with taxonomy column at the end)
+biom add-metadata -i feature-table.biom -o table-with-taxonomy.biom --observation-metadata-fp taxonomy.tsv --sc-separated taxonomy
+biom convert -i table-with-taxonomy.biom -o table-with-taxonomy.txt --to-tsv --header-key taxonomy 
