@@ -9,6 +9,7 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(tidyverse)
+library(qiime2R)
 
 rare.tab = read.table("rarefied_table.tab", h=T, sep='\t')
 rare.tab = rare.tab[,2:45]
@@ -23,14 +24,9 @@ sample_table <- read.csv("nifa_meta.csv", header = T)
 # Values are typically between 1.5 and 3.5 - these can be expected to be higher in soil microbiome data
 # Shannon value increases as both evenness and richness increase
 
-
-
-# This is broken now for some reason??? - Nothing was done to it as far as I can remember
+# If this breaks, just close out everything and restart Rstudio
 shannon = diversity(rare.tab)
 shannon = as.data.frame(shannon)
-
-
-
 
 shannon = tibble::rownames_to_column(shannon, "X")
 
@@ -148,22 +144,6 @@ plot_landscape(pseq.rel, method = "NMDS", distance = "bray", col = "Soil_type")
 
 # This is the important line - this makes the Permanova table
 permanova <- adonis2(t(otu) ~ Soil_type*Compartment*AG_Size, data = meta, permutations=999)
-
-
-
-print(as.data.frame(permanova$aov.tab)["Soil_type", "Pr(>F)"])
-
-# Doesn't give the names of the taxa - why?
-coef <- coefficients(permanova)
-top.coef <- coef[rev(order(abs(coef)))[1:20]]
-par(mar = c(3, 14, 2, 1))
-barplot(sort(top.coef), horiz = T, las = 1, main = "Top taxa")
-
-# Example version of above:
-#coef <- coefficients(permanova)["group1",]     <--where does group1 come from & what does it mean?
-#top.coef <- coef[rev(order(abs(coef)))[1:20]]
-#par(mar = c(3, 14, 2, 1))
-#barplot(sort(top.coef), horiz = T, las = 1, main = "Top taxa")
 
 
 
