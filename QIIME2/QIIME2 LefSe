@@ -4,13 +4,10 @@ qiime tools export \
   --input-path table.qza \
   --output-path table.export/
 
-cd table.export/
-biom convert -i feature-table.biom -o feature-table.tsv --to-tsv
-
-cd ..
 qiime tools export --input-path taxonomy.qza --output-path table.export/
 
 cd table.export/
+biom convert -i feature-table.biom -o feature-table.tsv --to-tsv
 
 ######################################################################################################################################
 
