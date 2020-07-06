@@ -3,17 +3,27 @@
 setwd("C:/Users/Sarah/Desktop/BiGGDataREEU/Data/QIIME2")
 
 # Loading in the necessary libraries and tables
-library(vegan)
-library(vegetarian)
-library(ggplot2)
+library(data.table)
 library(dplyr)
+library(DT)
+library(ecodist)
+library(ggplot2)
+library(ggpubr)
+library(microbiome)
+library(plotly)
+library(phyloseq)
+library(qiime2R)
+library(RColorBrewer)
 library(tidyr)
 library(tidyverse)
-library(qiime2R)
+library(vegan)
+library(vegetarian)
 
 rare.tab = read.table("rarefied_table.tab", h=T, sep='\t')
 rare.tab = rare.tab[,2:45]
 rare.tab = t(rare.tab)
+
+table_with_taxa.tab = read.table("table-with-taxonomy.txt", h=T, sep='\t')
 
 sample_table <- read.csv("nifa_meta.csv", header = T)
 
@@ -137,14 +147,35 @@ physeq = qza_to_phyloseq(features="rarefied_table.qza", tree="rooted-tree.qza", 
                          metadata="sample-metadata.tsv")
 
 pseq.rel = microbiome::transform(physeq, "compositional")
-otu <- abundances(pseq.rel)
-meta <- meta(pseq.rel)
+otu = abundances(pseq.rel)
+meta = meta(pseq.rel)
 
 plot_landscape(pseq.rel, method = "NMDS", distance = "bray", col = "Soil_type")
 
 # This is the important line - this makes the Permanova table
-permanova <- adonis2(t(otu) ~ Soil_type*Compartment*AG_Size, data = meta, permutations=999)
+permanova = adonis2(t(otu) ~ Soil_type*Compartment*AG_Size, data = meta, permutations=999)
 
+
+##############################################################################################################
+# https://archetypalecology.wordpress.com/2018/02/19/principal-coordinates-analysis-pcoa-in-r/
+# Generating pcoa plots with the ecodist package
+# Need to figure out how to separate data based on factors (soil type, compartment, etc)
+
+taxa.bray = vegdist(table_with_taxa.tab[,2:51], method = "bray")
+pcoaTX = pco(taxa.bray, negvals = 0, dround = 0)
+
+taxa.vegdist = vegdist(t(otu),method="bray",binary = FALSE)
+taxa.pcoa = ordinate(physeq, method = "PCoA", taxa.vegdist)
+
+# For graphs of other variables, change color = "[var]"
+plot_ordination(physeq, taxa.pcoa ,type="samples",color="Soil_type")+
+  geom_point()+
+  labs(title = "Soil Type")+
+  theme(panel.background = element_blank(),
+        panel.border = element_rect(fill = NA, color = "black"))
+
+
+plot_ly(x=temp, y=pressure, z=dtime, type="scatter3d", mode="markers", color=Soil_type)
 
 
 
