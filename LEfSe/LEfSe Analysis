@@ -1,0 +1,200 @@
+# Need:    (all from QIIME2 analysis)
+# taxonomy.qza
+# table-no-mitochondria-no-chloroplast.qza
+# sample-metadata.tsv
+
+# Using the LefSe pipeline to identify distinctive taxa in combinations of metadata (Soil_type, AGSize, Compartment) and samples (blanks, controls, TN, WA)
+# To adjust the taxa level (Order, Family, Genus, etc) being looked at, adjust --p-level in the second step of analysis (qiime taxa collapse)
+# Taxa level being analyzed in this documentation is Order (p-level = 4)   [Order = 4, Family = 5, Genus = 6]
+
+
+
+##############################################################################################################################################################
+# Analyzing TN, WA, and controls (no blanks)
+
+conda activate qiime2-2020.2
+
+# Filtering the data to exclude blanks (this is done in the p-where argument)
+qiime feature-table filter-samples \
+  --i-table table-no-mitochondria-no-chloroplast.qza \
+  --m-metadata-file sample-metadata.tsv \
+  --p-where "[Soil_type] IN ('Soil', 'TN', 'WA')" \
+  --o-filtered-table filtered-table-no-blank.qza
+
+# P-level adjusts the taxa level being considered (in this case, Order)
+qiime taxa collapse \
+  --i-table filtered-table-no-blank.qza \
+  --o-collapsed-table collapse.table.noBlank.qza \
+  --p-level 4 \
+  --i-taxonomy taxonomy.qza
+
+qiime feature-table relative-frequency \
+  --i-table collapse.table.noBlank.qza \
+  --o-relative-frequency-table collapse.frequency.table.noBlank.qza
+
+# Exporting to biom
+qiime tools export \
+--input-path collapse.frequency.table.noBlank.qza \
+--output-path collapse.frequency.noBlank/
+
+# Converting biom file to tsv file
+biom convert \
+-i collapse.frequency.noBlank/feature-table.biom \
+-o collapse.frequency.noBlank/collapse.frequency.table.txt \
+--to-tsv
+
+####################################################################################################################
+# All sections following this point are the same for each set of data and will not be included in the other sections
+####################################################################################################################
+
+####################################################################
+# THIS SECTION MUST BE RUN MANUALLY - do not run as a block of code
+# Have to stop and edit files in this section
+
+cd collapse.frequency.noBlank/
+
+
+# Remove the header and # before the OTU ID in the frequency table file
+# To be removed:
+# # Constructed from biom file
+# #
+
+
+# Combining the metadata file with the frequency table
+cat meta_noBlank.txt collapse.frequency.table.txt > collapse.frequency.table.with.meta.txt
+
+# Making copies of the frequency/meta table
+cp collapse.frequency.table.with.meta.txt SoilType.AGSize.meta.txt
+cp collapse.frequency.table.with.meta.txt SoilType.Compartment.meta.txt
+cp collapse.frequency.table.with.meta.txt AGSize.Compartment.meta.txt
+
+
+# Edit the copies to remove unneeded lines of metadata
+# Should have only 2 rows of metadata - LEfSe will not run properly if there are more
+# DO NOT remove the OTU ID line - this is also needed for LEfSe to run properly
+
+
+mkdir lefse
+cd lefse/
+
+####################################################################
+# This section can be run as a block of code
+
+conda activate lefse
+
+format_input.py SoilType.AGSize.meta.txt lefse/SoilType.AGSize.in -c 1 -s 2 -u 3 -o 1000000
+format_input.py SoilType.Compartment.meta.txt lefse/SoilType.Compartment.in -c 1 -s 2 -u 3 -o 1000000
+format_input.py AGSize.Compartment.meta.txt lefse/AGSize.Compartment.in -c 1 -s 2 -u 3 -o 1000000
+
+# The -l parameter describes the LDA cutoff score to be used - in this case, a score of 4
+run_lefse.py lefse/SoilType.AGSize.in lefse/SoilType.AGSize.res -b 200 -l 4
+run_lefse.py lefse/SoilType.Compartment.in lefse/SoilType.Compartment.res -b 200 -l 4
+run_lefse.py lefse/AGSize.Compartment.in lefse/AGSize.Compartment.res -b 200 -l 4
+
+####################################################################
+# Making bar charts and cladograms for each dataset
+# Not all commands will have to be run depending on results from the previous section
+
+plot_res.py lefse/SoilType.AGSize.res lefse/SoilType.AGSize.bar.png --dpi 300
+plot_res.py lefse/SoilType.Compartment.res lefse/SoilType.Compartment.bar.png --dpi 300
+plot_res.py lefse/AGSize.Compartment.res lefse/AGSize.Compartment.bar.png --dpi 300
+
+plot_cladogram.py lefse/SoilType.AGSize.res lefse/SoilType.AGSize.cladogram.png --format png
+plot_cladogram.py lefse/SoilType.Compartment.res lefse/SoilType.Compartment.cladogram.png --format png
+plot_cladogram.py lefse/AGSize.Compartment.res lefse/AGSize.Compartment.cladogram.png --format png
+
+
+
+##############################################################################################################################################################
+# Analyzing TN and controls (no blanks, no WA)
+
+conda activate qiime2-2020.2
+
+qiime feature-table filter-samples \
+  --i-table table-no-mitochondria-no-chloroplast.qza \
+  --m-metadata-file sample-metadata.tsv \
+  --p-where "[Soil_type] IN ('Soil', 'TN')" \
+  --o-filtered-table filtered-table-TN.qza
+
+qiime taxa collapse \
+  --i-table filtered-table-TN.qza \
+  --o-collapsed-table collapse.table.TN.qza \
+  --p-level 4 \
+  --i-taxonomy taxonomy.qza
+
+qiime feature-table relative-frequency \
+  --i-table collapse.table.TN.qza \
+  --o-relative-frequency-table collapse.frequency.table.TN.qza
+
+qiime tools export \
+--input-path collapse.frequency.table.TN.qza \
+--output-path collapse.frequency.TN/
+
+biom convert \
+-i collapse.frequency.TN/feature-table.biom \
+-o collapse.frequency.TN/collapse.frequency.table.txt \
+--to-tsv
+
+
+
+##############################################################################################################################################################
+# Analyzing WA and controls (no blanks, no TN)
+
+conda activate qiime2-2020.2
+
+qiime feature-table filter-samples \
+  --i-table table-no-mitochondria-no-chloroplast.qza \
+  --m-metadata-file sample-metadata.tsv \
+  --p-where "[Compartment] IN ('Leaf', 'Root')" \
+  --o-filtered-table filtered-table-no-blank-no-control.qza
+
+qiime taxa collapse \
+  --i-table filtered-table-no-blank-no-control.qza \
+  --o-collapsed-table collapse.table.noBlank.noControl.qza \
+  --p-level 4 \
+  --i-taxonomy taxonomy.qza
+
+qiime feature-table relative-frequency \
+  --i-table collapse.table.noBlank.noControl.qza \
+  --o-relative-frequency-table collapse.frequency.table.noBlank.noControl.qza
+
+qiime tools export \
+--input-path collapse.frequency.table.noBlank.noControl.qza \
+--output-path collapse.frequency.noBlank.noControl/
+
+biom convert \
+-i collapse.frequency.noBlank.noControl/feature-table.biom \
+-o collapse.frequency.noBlank.noControl/collapse.frequency.table.txt \
+--to-tsv
+
+
+##############################################################################################################################################################
+# Analyzing TN and WA (no blanks, no controls)
+
+conda activate qiime2-2020.2
+
+qiime feature-table filter-samples \
+  --i-table table-no-mitochondria-no-chloroplast.qza \
+  --m-metadata-file sample-metadata.tsv \
+  --p-where "[Compartment] IN ('Leaf', 'Root')" \
+  --o-filtered-table filtered-table-no-blank-no-control.qza
+
+qiime taxa collapse \
+  --i-table filtered-table-no-blank-no-control.qza \
+  --o-collapsed-table collapse.table.noBlank.noControl.qza \
+  --p-level 4 \
+  --i-taxonomy taxonomy.qza
+
+qiime feature-table relative-frequency \
+  --i-table collapse.table.noBlank.noControl.qza \
+  --o-relative-frequency-table collapse.frequency.table.noBlank.noControl.qza
+
+# Export to biom
+qiime tools export \
+--input-path collapse.frequency.table.noBlank.noControl.qza \
+--output-path collapse.frequency.noBlank.noControl/
+# convert biom to tsv
+biom convert \
+-i collapse.frequency.noBlank.noControl/feature-table.biom \
+-o collapse.frequency.noBlank.noControl/collapse.frequency.table.txt \
+--to-tsv
