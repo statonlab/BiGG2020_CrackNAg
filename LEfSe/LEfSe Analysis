@@ -63,10 +63,13 @@ cd collapse.frequency.noBlank/
 # Combining the metadata file with the frequency table
 cat meta_noBlank.txt collapse.frequency.table.txt > collapse.frequency.table.with.meta.txt
 
+sed 's/;__//g' collapse.frequency.table.with.meta.txt > intermediate_file.txt
+sed 's/D.*__//g' intermediate_file.txt > clean.collapse.frequency.table.with.meta.txt
+
 # Making copies of the frequency/meta table
-cp collapse.frequency.table.with.meta.txt SoilType.AGSize.meta.txt
-cp collapse.frequency.table.with.meta.txt SoilType.Compartment.meta.txt
-cp collapse.frequency.table.with.meta.txt AGSize.Compartment.meta.txt
+cp clean.collapse.frequency.table.with.meta.txt SoilType.AGSize.meta.txt
+cp clean.collapse.frequency.table.with.meta.txt SoilType.Compartment.meta.txt
+cp clean.collapse.frequency.table.with.meta.txt AGSize.Compartment.meta.txt
 
 
 # Edit the copies to remove unneeded lines of metadata
