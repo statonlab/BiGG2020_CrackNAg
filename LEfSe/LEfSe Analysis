@@ -43,9 +43,9 @@ biom convert \
 -o collapse.frequency.noBlank/collapse.frequency.table.txt \
 --to-tsv
 
-####################################################################################################################
-# All sections following this point are the same for each set of data and will not be included in the other sections
-####################################################################################################################
+###########################################################################################################################
+# All sections following this point are the same for each set of data and will not be included for the other data groupings
+###########################################################################################################################
 
 ####################################################################
 # THIS SECTION MUST BE RUN MANUALLY - do not run as a block of code
