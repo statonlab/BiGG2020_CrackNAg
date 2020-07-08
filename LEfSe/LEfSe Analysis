@@ -64,7 +64,7 @@ sed 's/;__//g' collapse.frequency.table.txt > intermediate_file.txt
 sed 's/D.*__//g' intermediate_file.txt > clean.collapse.frequency.table.txt
 
 # Combining the metadata file with the frequency table
-cat meta_noBlank.txt clean.collapse.frequency.table.txt > clean.collapse.frequency.table.with.meta.txt
+cat meta.txt clean.collapse.frequency.table.txt > clean.collapse.frequency.table.with.meta.txt
 
 # Making copies of the frequency/meta table
 cp clean.collapse.frequency.table.with.meta.txt SoilType.AGSize.meta.txt
