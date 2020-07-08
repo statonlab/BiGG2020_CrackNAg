@@ -1,0 +1,2 @@
+The plots in the Unfiltered Plots folder are generated from the filtered QIIME2 table (table-no-mitochondria-no-chloroplast.qza).
+For these files, "unfiltered" refers to the filtering process that takes place within LEfSe - NOT QIIME2.
