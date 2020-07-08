@@ -78,7 +78,6 @@ cp clean.collapse.frequency.table.with.meta.txt AGSize.Compartment.meta.txt
 
 
 mkdir lefse
-cd lefse/
 
 ####################################################################
 # This section can be run as a block of code
