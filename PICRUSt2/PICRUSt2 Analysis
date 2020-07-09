@@ -22,6 +22,12 @@ conda activate picrust2
 # https://github.com/picrust/picrust2/wiki/Full-pipeline-script
 picrust2_pipeline.py -s dna-sequences.fasta -i feature-table.biom -o picrust2_out_pipeline -p 4
 
+add_descriptions.py -i EC_metagenome_out/pred_metagenome_unstrat.tsv.gz -m EC \
+  -o EC_metagenome_out/pred_metagenome_unstrat_descrip.tsv.gz
+
+add_descriptions.py -i pathways_out/path_abun_unstrat.tsv.gz -m METACYC \
+  -o pathways_out/path_abun_unstrat_descrip.tsv.gz
+
 
 # Website to run step-by-step instead of all at once:
 # https://github.com/picrust/picrust2/wiki/PICRUSt2-Tutorial-(v2.3.0-beta)
