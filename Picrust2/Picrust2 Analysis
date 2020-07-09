@@ -19,4 +19,9 @@ cd picrust2/
 conda activate picrust2
 
 # Running the picrust2 pipeline (-p value should be changed based on how busy the server is at the time)
+# https://github.com/picrust/picrust2/wiki/Full-pipeline-script
 picrust2_pipeline.py -s dna-sequences.fasta -i feature-table.biom -o picrust2_out_pipeline -p 4
+
+
+# Website to run step-by-step instead of all at once:
+# https://github.com/picrust/picrust2/wiki/PICRUSt2-Tutorial-(v2.3.0-beta)
