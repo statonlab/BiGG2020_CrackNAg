@@ -1,9 +1,9 @@
-# Files needed:     (all from QQIME2)
-# 1. sample-metadata.tsv
-# 2. rep-seqs.qza
-# 3. feature-table.biom (in table.export folder)
+# Need:    (all from QIIME2 analysis)
+# rep-seqs.qza
+# feature-table.biom (in table.export folder)
 
 
+# Copy the feature-table.biom file into this folder once it is created
 mkdir picrust2
 
 # Converting the rep-seqs.qza file into a .fasta file
