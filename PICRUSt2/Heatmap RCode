@@ -1,0 +1,24 @@
+# Generating a heatmap from PICRUSt2 output
+
+setwd("C:/Users/Sarah/Desktop/BiGGDataREEU/Data/PICRUSt2")
+
+library(pheatmap)
+
+# Reading in and editing the file
+pathPred = read.table("path_pred.tsv", h=T, sep='\t')
+row.names(pathPred) = pathPred$description
+pathPred = pathPred[,3:52]
+
+# Scaling the matrix
+pathMatrix = as.matrix(pathPred)
+scaledMatrix = scale(pathMatrix)
+
+# Turning the NAs into 0s
+scaledMatrix[is.na(scaledMatrix)] = 0
+
+# Making the heatmap
+heatmap(scaledMatrix, col = heat.colors(256))
+
+dev.new()
+pheatmap(scaledMatrix)
+dev.off()
