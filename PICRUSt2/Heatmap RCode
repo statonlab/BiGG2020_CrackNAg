@@ -2,23 +2,95 @@
 
 setwd("C:/Users/Sarah/Desktop/BiGGDataREEU/Data/PICRUSt2")
 
+library(DESeq2)
 library(pheatmap)
 
 # Reading in and editing the file
-pathPred = read.table("path_pred.tsv", h=T, sep='\t')
+pathPred = read.csv("path_pred.tsv", h=T, sep='\t')
 row.names(pathPred) = pathPred$description
 pathPred = pathPred[,3:52]
 
+metaTable = read.table("../nifa_meta.csv", h=T, sep=',')
+row.names(metaTable) = metaTable[,1]
+metaTable = metaTable[,3:5]
+
+
+##############################################################################################################
+# Plotting data on a heatmap
+
 # Scaling the matrix
 pathMatrix = as.matrix(pathPred)
+
 scaledMatrix = scale(pathMatrix)
 
 # Turning the NAs into 0s
 scaledMatrix[is.na(scaledMatrix)] = 0
 
-# Making the heatmap
+# Making a basic heatmap
 heatmap(scaledMatrix, col = heat.colors(256))
 
-dev.new()
-pheatmap(scaledMatrix)
-dev.off()
+
+##############################################################################################################
+# DESeq2 Analysis
+
+myData = pathPred
+myData = as.matrix(myData)
+myData[is.na(myData)] = 0
+
+# Removing columns with all zeros
+myData = myData[,-2]
+myData = myData[,-25]
+
+metaTable = metaTable[-2,]
+metaTable = metaTable[-25,]
+
+# Numbers must be integers to use DESeq2
+myData = round(myData, digits = 0)
+
+# Trying to change the "Soil" in each of these columns to something different so they aren't redundant
+metaRow = nrow(metaTable)
+
+i = 0
+for(i in (1:metaRow)){
+  if(metaTable$Compartment[i] == "Soil") {
+    metaTable$Compartment[i] = "ControlCpmt"
+  }
+  if(metaTable$Soil_type[i] == "Soil") {
+    metaTable$Soil_type[i] = "ControlSoil"
+  }
+}
+
+# Adding 1 to each cell of myData to get rid of zeros
+myRow = nrow(myData)
+myCol = ncol(myData)
+i=0
+for(i in (1:myRow)) {
+  j=0
+  for(j in (1:myCol)) {
+    myData[i,j] = myData[i,j] + 1
+  }
+}
+
+
+# DESeq2 likes the most important variable to go last (in this case, soil type)
+ddsComp = DESeqDataSetFromMatrix(countData = myData, colData = metaTable, design = ~Compartment)
+ddsAG = DESeqDataSetFromMatrix(countData = myData, colData = metaTable, design = ~AG_Size)
+ddsSoil = DESeqDataSetFromMatrix(countData = myData, colData = metaTable, design = ~Soil_type)
+
+ddsComp = DESeq(ddsComp)
+ddsAG = DESeq(ddsAG)
+ddsSoil = DESeq(ddsSoil)
+
+compRes = results(ddsComp, contrast = c("Compartment", "Leaf", "Root"), lfcThreshold = 1, alpha = 0.05)
+soilRes = results(ddsSoil, contrast = c("Soil_type", "TN", "WA"), lfcThreshold = 1, alpha = 0.05)
+
+lsAGRes = results(ddsAG, contrast = c("AG_Size", "Large", "Small"), lfcThreshold = 1, alpha = 0.05)
+lmAGRes = results(ddsAG, contrast = c("AG_Size", "Large", "Medium"), lfcThreshold = 1, alpha = 0.05)
+msAGRes = results(ddsAG, contrast = c("AG_Size", "Medium", "Small"), lfcThreshold = 1, alpha = 0.05)
+
+summary(compRes)
+summary(soilRes)
+
+summary(lsAGRes)
+summary(lmAGRes)
+summary(msAGRes)
