@@ -1,0 +1,30 @@
+Descriptions of the types of heatmaps found in this folder
+
+============================================================================================================
+unclusteredScaled maps:
+-----------------------
+these are the most important of the maps (the final versions)
+no clustering was done on these maps to make it easier to see where the similarities lie among the variables
+additionally, the controls were removed in these analyses to prevent muddying of the actual data
+============================================================================================================
+
+
+rowScaled maps:
+---------------
+the next to last versions of the maps
+clustering is still done in these maps
+controls are still included in the analyses
+
+[variableName]Heatmap:
+----------------------
+second version of the maps
+variables are separated in these maps
+clustering is still done in these maps
+controls are included in the analyses
+
+scaledHeatmap:
+--------------
+the very first attempt at a heatmap
+variables (AGSize, SoilType, Compartment) are not separated
+clustering is still done in this map
+controls are included in the analysis
