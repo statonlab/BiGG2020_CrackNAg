@@ -2,6 +2,7 @@
 # taxonomy.qza
 # table-no-mitochondria-no-chloroplast.qza
 # sample-metadata.tsv
+# meta.txt (different for each of the 4 analyses)
 
 # Using the LefSe pipeline to identify distinctive taxa in combinations of metadata (Soil_type, AGSize, Compartment) and samples (blanks, controls, TN, WA)
 # To adjust the taxa level (Order, Family, Genus, etc) being looked at, adjust --p-level in the second step of analysis (qiime taxa collapse)
