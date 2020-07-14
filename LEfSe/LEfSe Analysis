@@ -26,7 +26,7 @@ qiime feature-table filter-samples \
 qiime taxa collapse \
   --i-table filtered-table-no-blank.qza \
   --o-collapsed-table collapse.table.noBlank.qza \
-  --p-level 4 \
+  --p-level 5 \
   --i-taxonomy taxonomy.qza
 
 qiime feature-table relative-frequency \
@@ -122,7 +122,7 @@ qiime feature-table filter-samples \
 qiime taxa collapse \
   --i-table filtered-table-TN.qza \
   --o-collapsed-table collapse.table.TN.qza \
-  --p-level 4 \
+  --p-level 5 \
   --i-taxonomy taxonomy.qza
 
 qiime feature-table relative-frequency \
@@ -154,7 +154,7 @@ qiime feature-table filter-samples \
 qiime taxa collapse \
   --i-table filtered-table-no-blank-no-control.qza \
   --o-collapsed-table collapse.table.noBlank.noControl.qza \
-  --p-level 4 \
+  --p-level 5 \
   --i-taxonomy taxonomy.qza
 
 qiime feature-table relative-frequency \
@@ -185,7 +185,7 @@ qiime feature-table filter-samples \
 qiime taxa collapse \
   --i-table filtered-table-no-blank-no-control.qza \
   --o-collapsed-table collapse.table.noBlank.noControl.qza \
-  --p-level 4 \
+  --p-level 5 \
   --i-taxonomy taxonomy.qza
 
 qiime feature-table relative-frequency \
