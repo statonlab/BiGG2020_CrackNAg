@@ -1,0 +1,163 @@
+# Generating a heatmap from PICRUSt2 output
+
+setwd("C:/Users/Sarah/Desktop/BiGGDataREEU/Data/PICRUSt2")
+
+library(DESeq2)
+library(genefilter)
+library(pheatmap)
+
+# Reading in and editing the file
+pathPred = read.csv("path_pred.tsv", h=T, sep='\t')
+row.names(pathPred) = pathPred$description
+pathPred = pathPred[,3:52]
+
+metaTable = read.table("../nifa_meta.csv", h=T, sep=',')
+row.names(metaTable) = metaTable[,1]
+metaTable = metaTable[,3:5]
+
+
+##############################################################################################################
+# Plotting data on a heatmap
+
+# Scaling the matrix
+pathMatrix = as.matrix(pathPred)
+
+scaledMatrix = scale(pathMatrix)
+
+# Turning the NAs into 0s
+scaledMatrix[is.na(scaledMatrix)] = 0
+
+# Making a basic heatmap
+heatmap(scaledMatrix, col = heat.colors(256))
+
+
+##############################################################################################################
+# Data editing
+
+myData = pathPred
+myData = as.matrix(myData)
+myData[is.na(myData)] = 0
+myData = myData[,7:50]
+
+# Removing columns with all zeros
+myData = myData[,-20]
+##myData = myData[,-17]  # Can we get rid of these as well? QIIME analysis was bad
+##myData = myData[,-17]
+
+metaTable = metaTable[7:50,]
+metaTable = metaTable[-20,]
+##metaTable = metaTable[-17,]
+##metaTable = metaTable[-17,]
+
+# Numbers must be integers to use DESeq2
+myData = round(myData, digits = 0)
+
+# Changing the "Soil" in each of these columns to something different so they aren't redundant
+##metaRow = nrow(metaTable)
+##i = 0
+##for(i in (1:metaRow)){
+##  if(metaTable$Compartment[i] == "Soil") {
+##    metaTable$Compartment[i] = "ControlCpmt"
+##  }
+##  if(metaTable$Soil_type[i] == "Soil") {
+##    metaTable$Soil_type[i] = "ControlSoil"
+##  }
+##}
+
+# Adding 1 to each cell of myData to get rid of zeros
+myRow = nrow(myData)
+myCol = ncol(myData)
+i=0
+for(i in (1:myRow)) {
+  j=0
+  for(j in (1:myCol)) {
+    myData[i,j] = myData[i,j] + 1
+  }
+}
+
+
+##############################################################################################################
+# DESeq2 analysis
+
+# Making data DESeq can use to determine significance of taxa
+ddsComp = DESeqDataSetFromMatrix(countData = myData, colData = metaTable, design = ~Compartment)
+ddsAG = DESeqDataSetFromMatrix(countData = myData, colData = metaTable, design = ~AG_Size)
+ddsSoil = DESeqDataSetFromMatrix(countData = myData, colData = metaTable, design = ~Soil_type)
+
+ddsComp = DESeq(ddsComp)
+ddsAG = DESeq(ddsAG)
+ddsSoil = DESeq(ddsSoil)
+
+rldComp = rlog(ddsComp, blind = FALSE, fitType = "mean")
+rldAG = rlog(ddsAG, blind = FALSE, fitType = "mean")
+rldSoil = rlog(ddsSoil, blind = FALSE, fitType = "mean")
+
+
+# Analysis to determine what is significant
+compRes = results(ddsComp, contrast = c("Compartment", "Leaf", "Root"), alpha = 0.05)
+soilRes = results(ddsSoil, contrast = c("Soil_type", "TN", "WA"), alpha = 0.05)
+
+lsAGRes = results(ddsAG, contrast = c("AG_Size", "Large", "Small"), alpha = 0.05)
+msAGRes = results(ddsAG, contrast = c("AG_Size", "Medium", "Small"), alpha = 0.05)
+mtAGRes = results(ddsAG, contrast = c("AG_Size", "Medium", "Total"), alpha = 0.05)
+stAGRes = results(ddsAG, contrast = c("AG_Size", "Small", "Total"), alpha = 0.05)
+
+# Produce no significant results - won't use
+##ltAGRes = results(ddsAG, contrast = c("AG_Size", "Large", "Total"), alpha = 0.05)
+##lmAGRes = results(ddsAG, contrast = c("AG_Size", "Large", "Medium"), alpha = 0.05)
+
+
+# Seeing how many significant results there were for each comparison
+summary(compRes)
+summary(soilRes)
+
+summary(lsAGRes)
+summary(msAGRes)
+summary(mtAGRes)
+summary(stAGRes)
+
+
+# Making tables of the significant pathways for each variable (Compartment, Soil_type, AG_Size)
+sigComp = data.frame(compRes[which(compRes$padj<0.05),])
+sigSoil = data.frame(soilRes[which(soilRes$padj<0.05),])
+
+# Changing the NAs to zeros so the 4 AGSize comparisons can be merged into one object
+# Only this one had NAs - not sure why
+lsAGRes$padj[is.na(lsAGRes$padj)] = 1
+
+# Lots of overlap in these - heatmap only has 7 pathways
+lsRes = lsAGRes[lsAGRes$padj < 0.05, ]
+msRes = msAGRes[msAGRes$padj < 0.05, ]
+mtRes = mtAGRes[mtAGRes$padj < 0.05, ]
+stRes = stAGRes[msAGRes$padj < 0.05, ]
+
+sigAG = rbind(lsRes, msRes, mtRes, stRes)
+
+
+##############################################################################################################
+# Making the heatmaps (one for each variable - Compartment, Soil_type, and AG_Size)
+# Note: May need to click "zoom" on the graphs and make window full screen for plot to look right
+
+compSort = metaTable[order(metaTable[,1]),]
+soilSort = metaTable[order(metaTable[,3]),]
+agSort = metaTable[order(metaTable[,2]),]
+
+# Making the annotations for the graphs
+annotationDFComp = as.data.frame(colData(rldComp)[,c("Compartment", "AG_Size", "Soil_type")])
+rownames(annotationDFComp) = colnames(rldComp)
+
+annotationDFSoil = annotationDFComp[,c(3,1,2)]
+annotationDFAG = annotationDFComp[,c(2,1,3)]
+
+# Plotting the heatmaps
+comp.heatmap = assay(rldComp[rownames(rldComp) %in% rownames(sigComp),])
+comp.heatmap = comp.heatmap[,rownames(compSort)]
+compMap = pheatmap(comp.heatmap, scale = "row", annotation_col = annotationDFComp, cluster_cols = F)
+
+soil.heatmap = assay(rldSoil[rownames(rldSoil) %in% rownames(sigSoil),])
+soil.heatmap = soil.heatmap[,rownames(soilSort)]
+soilMap = pheatmap(soil.heatmap, scale = "row", annotation_col = annotationDFSoil, cluster_cols = F)
+
+ag.heatmap = assay(rldAG[rownames(rldAG) %in% rownames(sigAG)],)
+ag.heatmap = ag.heatmap[,rownames(agSort)]
+agMap = pheatmap(ag.heatmap, scale = "row", annotation_col = annotationDFAG, cluster_cols = F)
