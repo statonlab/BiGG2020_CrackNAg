@@ -161,3 +161,11 @@ soilMap = pheatmap(soil.heatmap, scale = "row", annotation_col = annotationDFSoi
 ag.heatmap = assay(rldAG[rownames(rldAG) %in% rownames(sigAG)],)
 ag.heatmap = ag.heatmap[,rownames(agSort)]
 agMap = pheatmap(ag.heatmap, scale = "row", annotation_col = annotationDFAG, cluster_cols = F)
+
+#Making the heatmaps with the separate boxes - a bit easier to analyze, but not used as the final version
+compMap = pheatmap(comp.heatmap, scale = "row", annotation_col = annotationDFComp, cluster_cols = F, cellheight = 20,
+                   cellwidth = 20)
+soilMap = pheatmap(soil.heatmap, scale = "row", annotation_col = annotationDFSoil, cluster_cols = F, cellheight = 20,
+                   cellwidth = 20)
+agMap = pheatmap(ag.heatmap, scale = "row", annotation_col = annotationDFAG, cluster_cols = F, cellheight = 20, 
+                 cellwidth = 20)
