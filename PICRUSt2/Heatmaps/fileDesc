@@ -9,6 +9,11 @@ additionally, the controls were removed in these analyses to prevent muddying of
 ============================================================================================================
 
 
+boxed maps:
+-----------
+same as the unclusteredScaled maps, but each cell is outlined
+not used as final figures, but helpful for analysis
+
 rowScaled maps:
 ---------------
 the next to last versions of the maps
