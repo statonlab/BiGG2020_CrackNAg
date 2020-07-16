@@ -2,7 +2,7 @@
 Create on July 16, 2020
 Author: Jiali
 This is the script to edit the lefse res file. Make the taxonomy levels separate by '|'. 
-Usage: python edit_lefse_res.py <input res file> <output file name>
+Usage: python edit_lefse_res <input res file> <output file name>
 """
 
 import sys
@@ -23,4 +23,4 @@ with open(file_in,"r") as f, open(file_out,"w") as out:
 
         #make this code into text file and then run the following command with file of interest
         python edit_lefse_res.py your_result_file.res new_file.res
-      #example:  python edit_lefse_res.py collapse.frequency.table.with.meta.txt new.collapse.frequency.table.with.meta.txt
+      #example:  python edit_lefse_res collapse.frequency.table.with.meta.txt new.collapse.frequency.table.with.meta.txt
