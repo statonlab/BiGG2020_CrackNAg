@@ -2,6 +2,7 @@
 # taxonomy.qza
 # table-no-mitochondria-no-chloroplast.qza
 # sample-metadata.tsv
+# meta.txt (different for each of the 4 analyses)
 
 # Using the LefSe pipeline to identify distinctive taxa in combinations of metadata (Soil_type, AGSize, Compartment) and samples (blanks, controls, TN, WA)
 # To adjust the taxa level (Order, Family, Genus, etc) being looked at, adjust --p-level in the second step of analysis (qiime taxa collapse)
@@ -25,7 +26,7 @@ qiime feature-table filter-samples \
 qiime taxa collapse \
   --i-table filtered-table-no-blank.qza \
   --o-collapsed-table collapse.table.noBlank.qza \
-  --p-level 4 \
+  --p-level 5 \
   --i-taxonomy taxonomy.qza
 
 qiime feature-table relative-frequency \
@@ -121,7 +122,7 @@ qiime feature-table filter-samples \
 qiime taxa collapse \
   --i-table filtered-table-TN.qza \
   --o-collapsed-table collapse.table.TN.qza \
-  --p-level 4 \
+  --p-level 5 \
   --i-taxonomy taxonomy.qza
 
 qiime feature-table relative-frequency \
@@ -148,25 +149,25 @@ qiime feature-table filter-samples \
   --i-table table-no-mitochondria-no-chloroplast.qza \
   --m-metadata-file sample-metadata.tsv \
   --p-where "[Compartment] IN ('Leaf', 'Root')" \
-  --o-filtered-table filtered-table-no-blank-no-control.qza
+  --o-filtered-table filtered-table-WA.qza
 
 qiime taxa collapse \
-  --i-table filtered-table-no-blank-no-control.qza \
-  --o-collapsed-table collapse.table.noBlank.noControl.qza \
-  --p-level 4 \
+  --i-table filtered-table-WA.qza \
+  --o-collapsed-table collapse.table.WA.qza \
+  --p-level 5 \
   --i-taxonomy taxonomy.qza
 
 qiime feature-table relative-frequency \
-  --i-table collapse.table.noBlank.noControl.qza \
-  --o-relative-frequency-table collapse.frequency.table.noBlank.noControl.qza
+  --i-table collapse.table.WA.qza \
+  --o-relative-frequency-table collapse.frequency.table.WA.qza
 
 qiime tools export \
---input-path collapse.frequency.table.noBlank.noControl.qza \
---output-path collapse.frequency.noBlank.noControl/
+--input-path collapse.frequency.table.WA.qza \
+--output-path collapse.frequency.WA/
 
 biom convert \
--i collapse.frequency.noBlank.noControl/feature-table.biom \
--o collapse.frequency.noBlank.noControl/collapse.frequency.table.txt \
+-i collapse.frequency.WA/feature-table.biom \
+-o collapse.frequency.WA/collapse.frequency.table.txt \
 --to-tsv
 
 
@@ -184,7 +185,7 @@ qiime feature-table filter-samples \
 qiime taxa collapse \
   --i-table filtered-table-no-blank-no-control.qza \
   --o-collapsed-table collapse.table.noBlank.noControl.qza \
-  --p-level 4 \
+  --p-level 5 \
   --i-taxonomy taxonomy.qza
 
 qiime feature-table relative-frequency \
