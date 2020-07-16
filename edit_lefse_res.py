@@ -23,4 +23,4 @@ with open(file_in,"r") as f, open(file_out,"w") as out:
 
         #make this code into text file and then run the following command with file of interest
         python edit_lefse_res.py your_result_file.res new_file.res
-      #example:  python edit_lefse_res.py clean.collapse.frequency.table.with.meta.txt new.collapse.frequency.table.with.meta.txt
+      #example:  python edit_lefse_res.py collapse.frequency.table.with.meta.txt new.collapse.frequency.table.with.meta.txt
