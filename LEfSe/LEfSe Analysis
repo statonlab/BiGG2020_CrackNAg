@@ -72,10 +72,15 @@ cp clean.collapse.frequency.table.with.meta.txt SoilType.AGSize.meta.txt
 cp clean.collapse.frequency.table.with.meta.txt SoilType.Compartment.meta.txt
 cp clean.collapse.frequency.table.with.meta.txt AGSize.Compartment.meta.txt 
 
-# Making copies of the frequency/meta table with | separated data
-cp new.clean.collapse.frequency.table.with.meta.txt SoilType.AGSize.meta.txt
-cp new.clean.collapse.frequency.table.with.meta.txt SoilType.Compartment.meta.txt
-cp new.clean.collapse.frequency.table.with.meta.txt AGSize.Compartment.meta.txt
+#### Making copies of the frequency/meta table
+cp collapse.frequency.table.with.meta.txt SoilType.AGSize.meta.txt
+cp collapse.frequency.table.with.meta.txt SoilType.Compartment.meta.txt
+cp collapse.frequency.table.with.meta.txt AGSize.Compartment.meta.txt 
+
+##### Making copies of the frequency/meta table with | separated data
+cp new.collapse.frequency.table.with.meta.txt SoilType.AGSize.meta.txt
+cp new.collapse.frequency.table.with.meta.txt SoilType.Compartment.meta.txt
+cp new.collapse.frequency.table.with.meta.txt AGSize.Compartment.meta.txt
 
 
 
