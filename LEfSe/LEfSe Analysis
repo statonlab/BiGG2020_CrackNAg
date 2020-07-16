@@ -113,14 +113,14 @@ plot_res.py lefse/SoilType.AGSize.res lefse/SoilType.AGSize.bar.png --dpi 300
 plot_res.py lefse/SoilType.Compartment.res lefse/SoilType.Compartment.bar.png --dpi 300
 plot_res.py lefse/AGSize.Compartment.res lefse/AGSize.Compartment.bar.png --dpi 300
 
-plot_cladogram.py lefse/SoilType.AGSize.res lefse/SoilType.AGSize.cladogram.png --format png
-plot_cladogram.py lefse/SoilType.Compartment.res lefse/SoilType.Compartment.cladogram.png --format png
-plot_cladogram.py lefse/AGSize.Compartment.res lefse/AGSize.Compartment.cladogram.png --format png
+plot_cladogram.py lefse/SoilType.AGSize.res lefse/SoilType.AGSize.cladogram.png --format png --dpi 300
+plot_cladogram.py lefse/SoilType.Compartment.res lefse/SoilType.Compartment.cladogram.png --format png --dpi 300
+plot_cladogram.py lefse/AGSize.Compartment.res lefse/AGSize.Compartment.cladogram.png --format png --dpi 300
 
 #new cladograms with | separation
-plot_cladogram.py lefse/SoilType.AGSize.res lefse/new.SoilType.AGSize.cladogram.png --format png
-plot_cladogram.py lefse/SoilType.Compartment.res lefse/new.SoilType.Compartment.cladogram.png --format png
-plot_cladogram.py lefse/AGSize.Compartment.res lefse/new.AGSize.Compartment.cladogram.png --format png
+plot_cladogram.py lefse/SoilType.AGSize.res lefse/new.SoilType.AGSize.cladogram.png --format png --dpi 300
+plot_cladogram.py lefse/SoilType.Compartment.res lefse/new.SoilType.Compartment.cladogram.png --format png --dpi 300
+plot_cladogram.py lefse/AGSize.Compartment.res lefse/new.AGSize.Compartment.cladogram.png --format png --dpi 300
 
 
 ##############################################################################################################################################################
