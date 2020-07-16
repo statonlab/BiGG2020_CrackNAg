@@ -118,9 +118,11 @@ plot_cladogram.py lefse/SoilType.Compartment.res lefse/SoilType.Compartment.clad
 plot_cladogram.py lefse/AGSize.Compartment.res lefse/AGSize.Compartment.cladogram.png --format png --dpi 300
 
 #new cladograms with | separation
-plot_cladogram.py lefse/SoilType.AGSize.res lefse/new.SoilType.AGSize.cladogram.png --format png --dpi 300
-plot_cladogram.py lefse/SoilType.Compartment.res lefse/new.SoilType.Compartment.cladogram.png --format png --dpi 300
-plot_cladogram.py lefse/AGSize.Compartment.res lefse/new.AGSize.Compartment.cladogram.png --format png --dpi 300
+plot_cladogram.py lefse/SoilType.AGSize.res lefse/new.SoilType.AGSize.cladogram.png --format png --dpi 300 max_point_size: 10
+plot_cladogram.py lefse/SoilType.Compartment.res lefse/new.SoilType.Compartment.cladogram.png --format png --dpi 300 max_point_size: 10
+plot_cladogram.py lefse/AGSize.Compartment.res lefse/new.AGSize.Compartment.cladogram.png --format png --dpi 300 max_point_size: 10
+
+# link for adjusting cladogram settings: https://toolshed.g2.bx.psu.edu/repository/display_tool?repository_id=cabebb0465f009e4&render_repository_actions_for=tool_shed&tool_config=%2Fsrv%2Ftoolshed%2Fmain%2Fvar%2Fdata%2Frepos%2F001%2Frepo_1008%2Fhome%2Fubuntu%2Flefse_to_export%2Fplot_cladogram.xml&changeset_revision=a31c10fe09c8
 
 
 ##############################################################################################################################################################
