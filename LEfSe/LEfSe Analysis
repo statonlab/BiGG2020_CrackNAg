@@ -70,7 +70,13 @@ cat meta.txt clean.collapse.frequency.table.txt > clean.collapse.frequency.table
 # Making copies of the frequency/meta table
 cp clean.collapse.frequency.table.with.meta.txt SoilType.AGSize.meta.txt
 cp clean.collapse.frequency.table.with.meta.txt SoilType.Compartment.meta.txt
-cp clean.collapse.frequency.table.with.meta.txt AGSize.Compartment.meta.txt
+cp clean.collapse.frequency.table.with.meta.txt AGSize.Compartment.meta.txt 
+
+# Making copies of the frequency/meta table with | separated data
+cp new.clean.collapse.frequency.table.with.meta.txt SoilType.AGSize.meta.txt
+cp new.clean.collapse.frequency.table.with.meta.txt SoilType.Compartment.meta.txt
+cp new.clean.collapse.frequency.table.with.meta.txt AGSize.Compartment.meta.txt
+
 
 
 # Edit the copies to remove unneeded lines of metadata
@@ -106,6 +112,10 @@ plot_cladogram.py lefse/SoilType.AGSize.res lefse/SoilType.AGSize.cladogram.png 
 plot_cladogram.py lefse/SoilType.Compartment.res lefse/SoilType.Compartment.cladogram.png --format png
 plot_cladogram.py lefse/AGSize.Compartment.res lefse/AGSize.Compartment.cladogram.png --format png
 
+#new cladograms with | separation
+plot_cladogram.py lefse/SoilType.AGSize.res lefse/new.SoilType.AGSize.cladogram.png --format png
+plot_cladogram.py lefse/SoilType.Compartment.res lefse/new.SoilType.Compartment.cladogram.png --format png
+plot_cladogram.py lefse/AGSize.Compartment.res lefse/new.AGSize.Compartment.cladogram.png --format png
 
 
 ##############################################################################################################################################################
